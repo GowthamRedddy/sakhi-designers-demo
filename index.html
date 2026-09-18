@@ -3,286 +3,279 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sakhi Designers — Custom Womenswear & Half Sarees | Kukatpally, Hyderabad</title>
-<meta name="description" content="Sakhi Designers, Kukatpally — custom frocks, blouses, lehengas and pattu half sarees, stitched with love. Two branches: Gopal Nagar & Pragathi Nagar. Order on WhatsApp.">
+<title>Sakhi Designers — Gopal Nagar &amp; Pragathi Nagar, Kukatpally, Hyderabad</title>
+<meta name="description" content="Sakhi Designers, Gopal Nagar &amp; Pragathi Nagar, Kukatpally Hyderabad — demo website preview. Contact on WhatsApp.">
+<!--
+  PERMANENT MOTION STANDARD (GOWTHAM, 2026-09-18):
+  dark #09090b palette · asymmetric Bento Grid · py-24 · micro-borders ·
+  backdrop-blur glassmorphism · scroll reveals (slide up + scale + fade from blur) ·
+  3D-tilt / scale hovers · cubic-bezier(0.16,1,0.3,1) · fluid clamp() type ·
+  explicit aspect ratios (zero layout shift). React/Tailwind/Framer Motion build
+  variant: demo_react_template.jsx
+-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/framer-motion@11/dist/framer-motion.js"></script>
+<script>
+  /* ---- Motion engine config (Framer Motion UMD, animates DOM via WAAPI) ---- */
+  const EASE = [0.16, 1, 0.3, 1];
+  document.addEventListener("DOMContentLoaded", () => {
+    const { animate, inView, stagger } = window.Motion;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    /* scroll reveals: slide up + scale + fade from blur */
+    inView("[data-reveal]", (el) => {
+      if (reduced) return;
+      animate(el.target,
+        { opacity: [0, 1], transform: ["translateY(48px) scale(0.94)", "translateY(0px) scale(1)"], filter: ["blur(10px)", "blur(0px)"] },
+        { duration: 0.9, delay: (parseFloat(el.target.dataset.reveal) || 0), ease: EASE });
+    }, { margin: "0px 0px -12% 0px" });
+
+    /* 3D tilt hovers (pointer-fine devices only) */
+    if (matchMedia("(pointer:fine)").matches && !reduced) {
+      document.querySelectorAll("[data-tilt]").forEach((card) => {
+        card.style.transformPerspective = "900px";
+        card.addEventListener("pointermove", (e) => {
+          const r = card.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width - 0.5;
+          const y = (e.clientY - r.top) / r.height - 0.5;
+          animate(card, { rotateX: -y * 8, rotateY: x * 8, scale: 1.02 },
+            { duration: 0.35, ease: EASE });
+        });
+        card.addEventListener("pointerleave", () => {
+          animate(card, { rotateX: 0, rotateY: 0, scale: 1 }, { duration: 0.5, ease: EASE });
+        });
+      });
+    }
+
+    /* staggered hero entrance */
+    if (!reduced) {
+      animate("[data-hero-stagger]",
+        { opacity: [0, 1], transform: ["translateY(28px)", "translateY(0)"] },
+        { duration: 0.8, delay: stagger(0.1), ease: EASE });
+    }
+  });
+</script>
 <style>
+  /* ============ DESIGN TOKENS — dark premium ============ */
   :root{
-    --plum:#5b2344; --plum-dark:#3d1229;
-    --rose:#d4699b; --gold:#d9a441; --gold-soft:#f3ddb0;
-    --blush:#fdf4f7; --ink:#2e1a26; --muted:#8a7480;
+    --bg:#09090b; --bg-soft:#111113; --card:rgba(255,255,255,.04);
+    --line:rgba(255,255,255,.06); --line-strong:rgba(255,255,255,.12);
+    --ink:#fafafa; --ink-soft:#a1a1aa; --ink-faint:#71717a;
+    --accent:#e4e4e7; --wa:#22c55e; --wa-dark:#16a34a;
+    --radius:20px; --ease:cubic-bezier(0.16,1,0.3,1);
+    --font:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+    --step--1:clamp(0.85rem,0.82rem + 0.2vw,0.95rem);
+    --step-0:clamp(0.95rem,0.92rem + 0.3vw,1.08rem);
+    --step-1:clamp(1.15rem,1.05rem + 0.6vw,1.4rem);
+    --step-2:clamp(1.5rem,1.3rem + 1.2vw,2.1rem);
+    --step-3:clamp(2.1rem,1.5rem + 3vw,3.6rem);
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{font-family:'Jost',sans-serif;background:var(--blush);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased}
-  h1,h2,h3,.serif{font-family:'Cormorant Garamond',Georgia,serif}
+  body{font-family:var(--font);font-size:var(--step-0);line-height:1.6;color:var(--ink);
+    background:var(--bg);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img{max-width:100%;display:block}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
 
-  .demo-ribbon{position:fixed;top:14px;right:-46px;z-index:1001;background:var(--plum-dark);color:var(--gold-soft);
-    font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;padding:6px 50px;transform:rotate(45deg);
-    border:1px solid var(--gold);box-shadow:0 2px 8px rgba(0,0,0,.35)}
+  /* ============ DEMO RIBBON ============ */
+  .demo-ribbon{position:sticky;top:0;z-index:50;text-align:center;
+    background:repeating-linear-gradient(45deg,#18181b,#18181b 12px,#27272a 12px,#27272a 24px);
+    color:#fde68a;font-size:.78rem;font-weight:600;letter-spacing:.08em;
+    padding:.5rem 1rem;text-transform:uppercase}
 
-  header{position:sticky;top:0;z-index:1000;background:rgba(91,35,68,.97);backdrop-filter:blur(8px);border-bottom:1px solid rgba(217,164,65,.45)}
-  .nav{max-width:1100px;margin:auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .brand{display:flex;flex-direction:column;line-height:1.15}
-  .brand .name{font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--gold-soft);letter-spacing:.03em}
-  .brand .tag{font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.72)}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:999px;
-    text-decoration:none;font-weight:500;font-size:.95rem;transition:transform .15s ease,background .15s ease;cursor:pointer;border:none}
-  .btn:active{transform:scale(.97)}
-  .btn-wa{background:#1faa53;color:#fff;box-shadow:0 4px 14px rgba(31,170,83,.35)}
-  .btn-wa:hover{background:#178a43}
-  .btn-gold{background:var(--gold);color:var(--plum-dark);box-shadow:0 4px 14px rgba(217,164,65,.35)}
-  .btn-outline{border:1.5px solid var(--gold);color:var(--gold-soft);background:transparent}
-  .btn-outline:hover{background:rgba(217,164,65,.12)}
-  .btn-sm{padding:9px 16px;font-size:.85rem}
-  .wa-ico{width:17px;height:17px;fill:currentColor;flex:none}
+  /* ============ LAYOUT ============ */
+  .wrap{width:min(1150px,92%);margin-inline:auto}
+  section{padding:clamp(4rem,8vw,6rem) 0} /* py-24 spirit at every viewport */
 
-  .hero{position:relative;overflow:hidden;text-align:center;color:#fff;padding:86px 22px 96px;
-    background:radial-gradient(1000px 480px at 15% -10%, rgba(212,105,155,.3), transparent 60%),
-      linear-gradient(155deg, var(--plum) 0%, var(--plum-dark) 80%)}
-  .hero::before,.hero::after{content:"";position:absolute;left:50%;transform:translateX(-50%);width:min(540px,80%);height:1px;
-    background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-  .hero::before{top:32px}.hero::after{bottom:32px}
-  .hero .kicker{display:inline-block;font-size:.7rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold-soft);
-    border:1px solid rgba(217,164,65,.5);padding:7px 16px;border-radius:999px;margin-bottom:26px}
-  .hero h1{font-size:clamp(2rem,6.2vw,3.4rem);font-weight:600;line-height:1.15;max-width:720px;margin:0 auto 18px}
-  .hero h1 em{font-style:italic;color:var(--rose)}
-  .hero p.sub{max-width:580px;margin:0 auto 32px;color:rgba(255,255,255,.85);font-weight:300}
-  .branch-chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:32px}
-  .chip{font-size:.78rem;letter-spacing:.06em;color:var(--gold-soft);border:1px solid rgba(217,164,65,.45);
-    background:rgba(255,255,255,.06);border-radius:999px;padding:7px 16px}
-  .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  /* ============ HEADER ============ */
+  header.site{position:sticky;top:2.2rem;z-index:40;
+    background:rgba(9,9,11,.7);backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 0}
+  .brand{font-weight:800;font-size:var(--step-1);letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+  .nav a.btn{padding:.55rem 1.15rem;font-size:.88rem}
 
-  section{padding:70px 22px}
-  .container{max-width:1100px;margin:auto}
-  .sec-head{text-align:center;margin-bottom:42px}
-  .sec-head .eyebrow{font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--rose);font-weight:600}
-  .sec-head h2{font-size:clamp(1.6rem,4.5vw,2.3rem);color:var(--plum);margin-top:8px}
-  .divider{width:70px;height:2px;margin:16px auto 0;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  /* ============ BUTTONS ============ */
+  .btn{display:inline-flex;align-items:center;gap:.55rem;background:var(--accent);
+    color:#09090b;text-decoration:none;font-weight:700;border-radius:999px;
+    padding:.85rem 1.7rem;border:1px solid var(--line-strong);
+    transition:transform .3s var(--ease),box-shadow .3s var(--ease),background .3s var(--ease)}
+  .btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 10px 30px rgba(255,255,255,.08)}
+  .btn:active{transform:translateY(0) scale(.99)}
+  .btn.wa{background:var(--wa);color:#052e12;border-color:rgba(34,197,94,.4)}
+  .btn.wa:hover{background:var(--wa-dark);color:#f0fdf4}
+  .btn.ghost{background:rgba(255,255,255,.03);color:var(--ink);border:1px solid var(--line-strong)}
+  .btn.ghost:hover{background:rgba(255,255,255,.08)}
 
-  .about-card{background:#fff;border:1px solid #ecd9e2;border-radius:18px;padding:34px 30px;max-width:860px;
-    margin:auto;box-shadow:0 10px 30px rgba(61,18,41,.06)}
-  .about-card p{color:#54394a;font-weight:300}
-  .about-card p+p{margin-top:14px}
-  .about-card strong{color:var(--plum)}
+  /* ============ HERO ============ */
+  .hero{padding-top:clamp(4rem,9vw,7rem)}
+  .kicker{display:inline-block;background:rgba(255,255,255,.04);border:1px solid var(--line);
+    color:var(--ink-soft);font-weight:600;font-size:.8rem;letter-spacing:.14em;
+    text-transform:uppercase;border-radius:999px;padding:.4rem 1.05rem;margin-bottom:1.4rem}
+  h1{font-size:var(--step-3);line-height:1.06;letter-spacing:-.03em;font-weight:800;max-width:16ch}
+  h1 em{font-style:normal;background:linear-gradient(90deg,#fafafa 20%,#71717a);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  p.lead{max-width:44ch;margin:1.4rem 0 2.2rem;color:var(--ink-soft);font-size:var(--step-1)}
+  .cta-row{display:flex;gap:.9rem;flex-wrap:wrap}
 
-  #services{background:#fff}
-  .svc-grid{display:grid;gap:18px;grid-template-columns:1fr}
-  .svc{border:1px solid #ecd9e2;border-radius:16px;padding:26px 24px;background:var(--blush);transition:transform .18s ease,box-shadow .18s ease}
-  .svc:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(61,18,41,.1)}
-  .svc .ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(150deg,var(--plum),var(--plum-dark));color:var(--gold-soft);font-size:1.25rem;margin-bottom:14px;
-    border:1px solid rgba(217,164,65,.5)}
-  .svc h3{color:var(--plum);font-size:1.15rem;margin-bottom:6px}
-  .svc p{font-size:.92rem;color:var(--muted);font-weight:300}
+  /* ============ BENTO GRID ============ */
+  h2.sec{font-size:var(--step-2);letter-spacing:-.02em;font-weight:700;max-width:24ch}
+  p.sec-sub{color:var(--ink-soft);margin:.7rem 0 3rem;max-width:52ch}
+  .bento{display:grid;gap:1rem;grid-template-columns:repeat(6,1fr)}
+  .tile{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    padding:clamp(1.5rem,3vw,2.5rem);position:relative;overflow:hidden;
+    transition:border-color .3s var(--ease);will-change:transform}
+  .tile:hover{border-color:var(--line-strong)}
+  .t-a{grid-column:span 4;grid-row:span 2}
+  .t-b{grid-column:span 2;grid-row:span 2}
+  .t-c{grid-column:span 3}
+  .t-d{grid-column:span 3}
+  @media(max-width:900px){.bento{grid-template-columns:repeat(2,1fr)}
+    .t-a,.t-b,.t-c,.t-d{grid-column:span 2;grid-row:auto}}
+  @media(max-width:560px){.bento{grid-template-columns:1fr}
+    .t-a,.t-b,.t-c,.t-d{grid-column:span 1}}
 
-  .gal-note{max-width:640px;margin:0 auto 30px;text-align:center;font-size:.85rem;color:var(--muted);font-style:italic}
-  .gal-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:860px;margin:auto}
-  .gal-item{position:relative;aspect-ratio:3/4;border-radius:14px;overflow:hidden;display:flex;align-items:flex-end;
-    background:radial-gradient(240px 160px at 30% 20%, rgba(212,105,155,.28), transparent 65%),
-      linear-gradient(155deg,var(--plum) 0%,var(--plum-dark) 85%);border:1px solid rgba(217,164,65,.5)}
-  .gal-item .cap{width:100%;padding:14px;color:var(--gold-soft);font-size:.8rem;letter-spacing:.06em;
-    background:linear-gradient(0deg,rgba(46,15,30,.85),transparent)}
-  .gal-item .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-    color:rgba(243,221,176,.4);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase}
-  .gal-item.wide{grid-column:span 2;aspect-ratio:16/9}
+  .tile .icon{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;
+    background:rgba(255,255,255,.04);border:1px solid var(--line);font-size:1.25rem;
+    color:var(--ink);margin-bottom:1.1rem}
+  .tile h3{font-size:var(--step-1);letter-spacing:-.015em;font-weight:700}
+  .tile p{color:var(--ink-soft);margin-top:.5rem;font-size:var(--step--1)}
+  .stat{font-size:var(--step-3);font-weight:800;letter-spacing:-.03em;line-height:1}
+  .stat-sub{color:var(--ink-faint);font-size:var(--step--1);margin-top:.6rem}
+  .media{aspect-ratio:16/7;border-radius:14px;margin-bottom:1.4rem;overflow:hidden;
+    border:1px solid var(--line);
+    background:linear-gradient(135deg,#18181b,#09090b);display:grid;place-items:center;
+    color:var(--ink-faint);font-size:.85rem;text-align:center;padding:1rem}
+  .media.ratio-wide{aspect-ratio:16/9;margin-bottom:0}
+  .tile-b .media{aspect-ratio:4/5;margin:0 0 1.2rem}
 
-  #why-us{background:linear-gradient(155deg,var(--plum),var(--plum-dark));color:#fff}
-  #why-us .sec-head h2,#why-us .sec-head .eyebrow{color:var(--gold-soft)}
-  .why-grid{display:grid;gap:16px;grid-template-columns:1fr;max-width:860px;margin:auto}
-  .why{display:flex;gap:16px;align-items:flex-start;background:rgba(255,255,255,.06);border:1px solid rgba(217,164,65,.35);border-radius:14px;padding:20px 22px}
-  .why .n{font-family:'Cormorant Garamond',serif;color:var(--gold-soft);font-size:1.5rem;line-height:1;min-width:34px}
-  .why h3{font-size:1.02rem;color:#fff;margin-bottom:4px;font-family:'Jost',sans-serif;font-weight:500}
-  .why p{font-size:.88rem;color:rgba(255,255,255,.78);font-weight:300}
+  /* ============ GALLERY ============ */
+  .gallery{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+  .ph{aspect-ratio:4/5;border-radius:var(--radius);border:1px solid var(--line);
+    background:linear-gradient(135deg,#141416,#0c0c0e);display:grid;place-items:center;
+    color:var(--ink-faint);font-size:.85rem;text-align:center;padding:1rem;
+    transition:transform .35s var(--ease),border-color .35s var(--ease)}
+  .ph:hover{transform:scale(1.03);border-color:var(--line-strong)}
 
-  .branches{display:grid;gap:16px;max-width:860px;margin:auto}
-  .branch{background:#fff;border:1px solid #ecd9e2;border-radius:16px;padding:26px 28px}
-  .branch h3{color:var(--plum);margin-bottom:8px;font-size:1.15rem}
-  .branch p{color:#54394a;font-weight:300;font-size:.95rem}
-  .branch .btn{margin-top:14px;margin-right:10px}
-  .btn-map{background:var(--plum);color:#fff}
-  .btn-call{background:#fff;color:var(--plum);border:1.5px solid var(--plum)}
-  .btn-call:hover{background:var(--blush)}
+  /* ============ CONTACT ============ */
+  .contact-card{background:linear-gradient(135deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+    border:1px solid var(--line-strong);border-radius:calc(var(--radius)*1.3);
+    backdrop-filter:blur(18px);padding:clamp(2rem,5vw,3.5rem);text-align:center}
+  .contact-card h2{font-size:var(--step-2);letter-spacing:-.02em;margin-bottom:.6rem}
+  .contact-card p{color:var(--ink-soft);margin-bottom:1.6rem}
 
-  .contact-wrap{max-width:720px;margin:auto;text-align:center}
-  .contact-wrap p.lead{color:var(--muted);font-weight:300;max-width:520px;margin:0 auto 30px}
-  .contact-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:26px}
-  .contact-meta{font-size:.9rem;color:var(--muted)}
-  .contact-meta strong{color:var(--plum)}
+  /* ============ FOOTER ============ */
+  footer.site{border-top:1px solid var(--line);padding:2.5rem 0 3rem;text-align:center;
+    color:var(--ink-faint);font-size:.82rem}
+  footer.site .disclaimer{margin-top:.8rem;font-size:.72rem;opacity:.75;max-width:62ch;margin-inline:auto}
 
-  footer{background:var(--plum-dark);color:rgba(255,255,255,.7);text-align:center;padding:34px 22px 110px;font-size:.82rem;font-weight:300}
-  footer .fbrand{font-family:'Cormorant Garamond',serif;color:var(--gold-soft);font-size:1.15rem;margin-bottom:6px}
-  footer .demo-note{margin-top:10px;font-size:.7rem;letter-spacing:.08em;color:rgba(255,255,255,.45)}
+  /* ============ MOTION SAFETY ============ */
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    html{scroll-behavior:auto}
+    [data-reveal]{opacity:1!important;filter:none!important;transform:none!important}
+  }
+</style>
 
-  .mobile-bar{position:fixed;bottom:0;left:0;right:0;z-index:1000;display:flex;gap:10px;
-    padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgba(255,255,255,.97);
-    backdrop-filter:blur(10px);border-top:1px solid #ecd9e2;box-shadow:0 -6px 20px rgba(61,18,41,.08)}
-  .mobile-bar .btn{flex:1;padding:14px 10px}
-
-  @media(min-width:640px){.svc-grid{grid-template-columns:repeat(2,1fr)}.why-grid{grid-template-columns:1fr 1fr}.branches{grid-template-columns:1fr 1fr}}
-  @media(min-width:900px){.svc-grid{grid-template-columns:repeat(3,1fr)}.gal-grid{grid-template-columns:repeat(3,1fr)}section{padding:86px 22px}footer{padding-bottom:40px}.mobile-bar{display:none}}
+<style>:root{--brand:#a21caf;--brand-dark:#701a75;--accent:#fbbf24;}
+  .hero .kicker{background:#701a7526;color:#fbbf24;}
+  .tile .icon{background:#701a7533;color:#fbbf24;}
+  .stat{color:#fbbf24;}
 </style>
 </head>
 <body>
-<div class="demo-ribbon">Demo</div>
 
-<header>
-  <nav class="nav">
-    <div class="brand">
-      <span class="name">Sakhi Designers</span>
-      <span class="tag">Kukatpally · Hyderabad</span>
-    </div>
-    <div class="nav-cta">
-      <a class="btn btn-wa btn-sm" href="https://wa.me/919000639333?text=Hi%20Sakhi%20Designers%2C%20I%20saw%20your%20website%20and%20I%27m%20interested%20in%20a%20custom%20design." target="_blank" rel="noopener">
-        <svg class="wa-ico" viewBox="0 0 24 24"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.96L2 22l5.18-1.5A9.9 9.9 0 1 0 12.04 2Zm5.8 14.03c-.25.7-1.44 1.33-1.99 1.38-.55.06-1.07.25-3.6-.75-3.05-1.2-4.98-4.35-5.13-4.55-.15-.2-1.22-1.63-1.22-3.1 0-1.48.77-2.2 1.04-2.5.28-.3.6-.38.8-.38h.58c.18 0 .43-.07.67.51.25.6.85 2.07.92 2.22.08.15.13.33.03.53-.1.2-.15.33-.3.5-.15.18-.31.4-.45.53-.15.15-.3.31-.13.61.18.3.79 1.3 1.69 2.1 1.16 1.03 2.14 1.35 2.44 1.5.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.67-.15.28.1 1.75.83 2.05.98.3.15.5.22.58.35.07.13.07.75-.18 1.46Z"/></svg>
-        WhatsApp
-      </a>
-    </div>
-  </nav>
+<div class="demo-ribbon">⚠ Demo preview — not the official website</div>
+
+<header class="site">
+  <div class="wrap nav">
+    <a class="brand" href="#top">Sakhi Designers</a>
+    <a class="btn" href="#contact">Book Now</a>
+  </div>
 </header>
 
-<section class="hero" id="home">
-  <span class="kicker">Custom Womenswear · Half Sarees · Lehengas</span>
-  <h1>Stitched with love, <em>worn with pride</em></h1>
-  <p class="sub">Custom frocks, blouses, lehengas and pattu half sarees from our design studio in Kukatpally — serving families across Hyderabad.</p>
-  <div class="branch-chips">
-    <span class="chip">📍 Gopal Nagar</span>
-    <span class="chip">📍 Pragathi Nagar</span>
-  </div>
-  <div class="hero-actions">
-    <a class="btn btn-wa" href="https://wa.me/919000639333?text=Hi%20Sakhi%20Designers%2C%20I%20saw%20your%20website%20and%20I%27m%20interested%20in%20a%20custom%20design." target="_blank" rel="noopener">
-      <svg class="wa-ico" viewBox="0 0 24 24"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.96L2 22l5.18-1.5A9.9 9.9 0 1 0 12.04 2Zm5.8 14.03c-.25.7-1.44 1.33-1.99 1.38-.55.06-1.07.25-3.6-.75-3.05-1.2-4.98-4.35-5.13-4.55-.15-.2-1.22-1.63-1.22-3.1 0-1.48.77-2.2 1.04-2.5.28-.3.6-.38.8-.38h.58c.18 0 .43-.07.67.51.25.6.85 2.07.92 2.22.08.15.13.33.03.53-.1.2-.15.33-.3.5-.15.18-.31.4-.45.53-.15.15-.3.31-.13.61.18.3.79 1.3 1.69 2.1 1.16 1.03 2.14 1.35 2.44 1.5.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.67-.15.28.1 1.75.83 2.05.98.3.15.5.22.58.35.07.13.07.75-.18 1.46Z"/></svg>
-      Order on WhatsApp
-    </a>
-    <a class="btn btn-outline" href="#services">View collections</a>
-  </div>
-</section>
-
-<section id="about">
-  <div class="container">
-    <div class="sec-head">
-      <span class="eyebrow">About Us</span>
-      <h2>Your neighbourhood design studio</h2>
-      <div class="divider"></div>
-    </div>
-    <div class="about-card">
-      <p>Sakhi Designers creates <strong>custom-stitched womenswear</strong> — partywear frocks, georgette and ethnic designs, kidswear, blouses and lehengas — with every piece made to order.</p>
-      <p>From half-saree ceremony launches to everyday ethnic wear, our two Kukatpally branches — <strong>Gopal Nagar</strong> and <strong>Pragathi Nagar</strong> — serve customers who want designs tailored to them, not picked off a rack. Message us on WhatsApp to share your design idea.</p>
-    </div>
-  </div>
-</section>
-
-<section id="services">
-  <div class="container">
-    <div class="sec-head">
-      <span class="eyebrow">Collections</span>
-      <h2>What we stitch</h2>
-      <div class="divider"></div>
-    </div>
-    <div class="svc-grid">
-      <div class="svc"><div class="ico">👗</div><h3>Custom Frocks &amp; Partywear</h3><p>Georgette and ethnic partywear frocks, designed and stitched to your measurements.</p></div>
-      <div class="svc"><div class="ico">🥻</div><h3>Pattu Half Sarees</h3><p>Traditional half sarees — including our new launches in pattu collections.</p></div>
-      <div class="svc"><div class="ico">✨</div><h3>Lehengas &amp; Bridal Wear</h3><p>Lehengas and occasion wear for weddings, engagements and family functions.</p></div>
-      <div class="svc"><div class="ico">🪡</div><h3>Blouses &amp; Kidswear</h3><p>Custom blouses and children's wear, stitched with the same care as our bridal pieces.</p></div>
-      <div class="svc"><div class="ico">🎨</div><h3>Design to Order</h3><p>Bring a reference photo or an idea — we'll design it with you and stitch it to fit.</p></div>
-      <div class="svc"><div class="ico">💬</div><h3>WhatsApp Ordering</h3><p>Chat with us directly to share designs, ask prices and place orders.</p></div>
-    </div>
-  </div>
-</section>
-
-<section id="gallery">
-  <div class="container">
-    <div class="sec-head">
-      <span class="eyebrow">Gallery</span>
-      <h2>Our recent launches</h2>
-      <div class="divider"></div>
-    </div>
-    <p class="gal-note">Demo placeholder frames — the final site will feature real photos of Sakhi Designers' own collections (shared with approval).</p>
-    <div class="gal-grid">
-      <div class="gal-item"><span class="ph">Photo placeholder</span><div class="cap">Pattu half saree launch</div></div>
-      <div class="gal-item"><span class="ph">Photo placeholder</span><div class="cap">Custom partywear frock</div></div>
-      <div class="gal-item"><span class="ph">Photo placeholder</span><div class="cap">Lehenga — occasion wear</div></div>
-      <div class="gal-item wide"><span class="ph">Photo placeholder</span><div class="cap">Latest collection — in store now</div></div>
-      <div class="gal-item"><span class="ph">Photo placeholder</span><div class="cap">Custom blouses</div></div>
-    </div>
-  </div>
-</section>
-
-<section id="why-us">
-  <div class="container">
-    <div class="sec-head">
-      <span class="eyebrow">Why Choose Us</span>
-      <h2>Why families choose Sakhi</h2>
-      <div class="divider"></div>
-    </div>
-    <div class="why-grid">
-      <div class="why"><span class="n">01</span><div><h3>Two branches near you</h3><p>Visit us at Gopal Nagar or Pragathi Nagar, Kukatpally — wherever is closer.</p></div></div>
-      <div class="why"><span class="n">02</span><div><h3>Made to order, always</h3><p>Every piece is stitched for you — your design, your measurements, your occasion.</p></div></div>
-      <div class="why"><span class="n">03</span><div><h3>New collections often</h3><p>Half saree and festive launches keep the store fresh through the year.</p></div></div>
-      <div class="why"><span class="n">04</span><div><h3>Order from your phone</h3><p>WhatsApp us your reference — start your order without leaving home.</p></div></div>
-    </div>
-  </div>
-</section>
-
-<section id="branches">
-  <div class="container">
-    <div class="sec-head">
-      <span class="eyebrow">Visit Us</span>
-      <h2>Our branches</h2>
-      <div class="divider"></div>
-    </div>
-    <div class="branches">
-      <div class="branch">
-        <h3>📍 Gopal Nagar, Kukatpally</h3>
-        <p>Sakhi Designers — Gopal Nagar, Kukatpally, Hyderabad.</p>
-        <a class="btn btn-map btn-sm" href="https://www.google.com/maps/search/?api=1&query=Sakhi+Designers+Gopal+Nagar+Kukatpally+Hyderabad" target="_blank" rel="noopener">Open in Maps</a>
-        <a class="btn btn-call btn-sm" href="tel:+919000639333">Call</a>
-      </div>
-      <div class="branch">
-        <h3>📍 Pragathi Nagar, Kukatpally</h3>
-        <p>Sakhi Designers Studio — Pragathi Nagar, Kukatpally, Hyderabad.</p>
-        <a class="btn btn-map btn-sm" href="https://www.google.com/maps/search/?api=1&query=Sakhi+Designers+Studio+Pragathi+Nagar+Kukatpally+Hyderabad" target="_blank" rel="noopener">Open in Maps</a>
-        <a class="btn btn-call btn-sm" href="tel:+919000639333">Call</a>
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="kicker" data-hero-stagger>Gopal Nagar &amp; Pragathi Nagar, Kukatpally, Hyderabad</span>
+      <h1 data-hero-stagger>Sakhi Designers<br><em>— experience it online</em></h1>
+      <p class="lead" data-hero-stagger>Everything about Sakhi Designers in one premium place — browse, choose, and book directly on WhatsApp in seconds.</p>
+      <div class="cta-row" data-hero-stagger>
+        <a class="btn wa" href="https://wa.me/919000639333?text=Namaste!%20I%20saw%20Sakhi%20Designers%20online%20and%20want%20to%20design%20an%20outfit."
+           aria-label="Chat with Sakhi Designers on WhatsApp">💬 WhatsApp Us</a>
+        <a class="btn ghost" href="#services">Explore Services</a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="contact">
-  <div class="container contact-wrap">
-    <div class="sec-head">
-      <span class="eyebrow">Get In Touch</span>
-      <h2>Let's design your next outfit</h2>
-      <div class="divider"></div>
+  <!-- BENTO FEATURES -->
+  <section id="services">
+    <div class="wrap">
+      <h2 class="sec" data-reveal="0">Why customers choose Sakhi Designers</h2>
+      <p class="sec-sub" data-reveal="0.05">Replace with the business's real strengths — verified public info only. Asymmetric Bento Grid, glassmorphic tiles, micro-borders.</p>
+      <div class="bento">
+        <article class="tile t-a" data-reveal="0" data-tilt>
+          <div class="media">Owner's real photo goes here (16:7)</div>
+          <h3>Custom Frocks &amp; Partywear</h3>
+          <p>Georgette and ethnic partywear frocks, designed and stitched to your measurements.</p>
+          <a class="btn" style="margin-top:1.6rem" href="#contact">Design your outfit</a>
+        </article>
+        <article class="tile tile-b t-b" data-reveal="0.08" data-tilt>
+          <div class="media">Photo (4:5)</div>
+          <div class="stat">2</div>
+          <p class="stat-sub">Branches — Gopal Nagar &amp; Pragathi Nagar, Kukatpally. (public listings)</p>
+        </article>
+        <article class="tile t-c" data-reveal="0" data-tilt>
+          <div class="icon">🥻</div>
+          <h3>Pattu Half Sarees</h3>
+          <p>Traditional half sarees — including our new launches in pattu collections.</p>
+        </article>
+        <article class="tile t-d" data-reveal="0" data-tilt>
+          <div class="icon">📍</div>
+          <h3>Two branches near you</h3>
+          <p>Visit us at Gopal Nagar or Pragathi Nagar, Kukatpally — wherever is closer.</p>
+        </article>
+      </div>
     </div>
-    <p class="lead">Send us your design idea on WhatsApp — we'll guide you from fabric to fitting.</p>
-    <div class="contact-actions">
-      <a class="btn btn-wa" href="https://wa.me/919000639333?text=Hi%20Sakhi%20Designers%2C%20I%20have%20a%20design%20in%20mind%20and%20would%20like%20to%20discuss%20it." target="_blank" rel="noopener">
-        <svg class="wa-ico" viewBox="0 0 24 24"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.96L2 22l5.18-1.5A9.9 9.9 0 1 0 12.04 2Zm5.8 14.03c-.25.7-1.44 1.33-1.99 1.38-.55.06-1.07.25-3.6-.75-3.05-1.2-4.98-4.35-5.13-4.55-.15-.2-1.22-1.63-1.22-3.1 0-1.48.77-2.2 1.04-2.5.28-.3.6-.38.8-.38h.58c.18 0 .43-.07.67.51.25.6.85 2.07.92 2.22.08.15.13.33.03.53-.1.2-.15.33-.3.5-.15.18-.31.4-.45.53-.15.15-.3.31-.13.61.18.3.79 1.3 1.69 2.1 1.16 1.03 2.14 1.35 2.44 1.5.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.67-.15.28.1 1.75.83 2.05.98.3.15.5.22.58.35.07.13.07.75-.18 1.46Z"/></svg>
-        Chat on WhatsApp
-      </a>
-      <a class="btn btn-gold" href="tel:+919000639333">Call 90006 39333</a>
-    </div>
-    <p class="contact-meta"><strong>Sakhi Designers</strong> · Gopal Nagar &amp; Pragathi Nagar, Kukatpally, Hyderabad</p>
-  </div>
-</section>
+  </section>
 
-<footer>
-  <div class="fbrand">Sakhi Designers</div>
-  <div>Gopal Nagar &amp; Pragathi Nagar, Kukatpally, Hyderabad</div>
-  <div>+91 90006 39333</div>
-  <div class="demo-note">⚠ DEMO WEBSITE — created for presentation purposes only. Not the official website of Sakhi Designers.</div>
+  <!-- GALLERY -->
+  <section id="gallery" style="border-block:1px solid var(--line);background:#0c0c0e">
+    <div class="wrap">
+      <h2 class="sec" data-reveal="0">Gallery</h2>
+      <p class="sec-sub" data-reveal="0.05">Owner's real photos go here after approval — placeholders until then.</p>
+      <div class="gallery">
+        <div class="ph" data-reveal="0.00" data-tilt>Party Frocks<br>(from owner)</div>
+        <div class="ph" data-reveal="0.06" data-tilt>Pattu Half Sarees<br>(from owner)</div>
+        <div class="ph" data-reveal="0.12" data-tilt>Lehengas<br>(from owner)</div>
+        <div class="ph" data-reveal="0.18" data-tilt>Kids' Wear<br>(from owner)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact-card" data-reveal="0" data-tilt>
+        <h2>Visit or message us</h2>
+        <p>Sakhi Designers · Gopal Nagar &amp; Pragathi Nagar, Kukatpally, Hyderabad</p>
+        <a class="btn wa" href="https://wa.me/919000639333" aria-label="Open WhatsApp chat with Sakhi Designers">💬 Chat on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <p>© 2026-09-18 Sakhi Designers · Gopal Nagar &amp; Pragathi Nagar, Kukatpally, Hyderabad</p>
+    <p class="disclaimer">This is a design demo created by Gowtham (web designer, Hyderabad) for preview purposes only. Not the official website. Business details shown are from public listings; photos are placeholders until the owner approves.</p>
+  </div>
 </footer>
-
-<div class="mobile-bar">
-  <a class="btn btn-call" href="tel:+919000639333">📞 Call</a>
-  <a class="btn btn-wa" href="https://wa.me/919000639333?text=Hi%20Sakhi%20Designers%2C%20I%20saw%20your%20website%20and%20I%27m%20interested%20in%20a%20custom%20design." target="_blank" rel="noopener">
-    <svg class="wa-ico" viewBox="0 0 24 24"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.96L2 22l5.18-1.5A9.9 9.9 0 1 0 12.04 2Zm5.8 14.03c-.25.7-1.44 1.33-1.99 1.38-.55.06-1.07.25-3.6-.75-3.05-1.2-4.98-4.35-5.13-4.55-.15-.2-1.22-1.63-1.22-3.1 0-1.48.77-2.2 1.04-2.5.28-.3.6-.38.8-.38h.58c.18 0 .43-.07.67.51.25.6.85 2.07.92 2.22.08.15.13.33.03.53-.1.2-.15.33-.3.5-.15.18-.31.4-.45.53-.15.15-.3.31-.13.61.18.3.79 1.3 1.69 2.1 1.16 1.03 2.14 1.35 2.44 1.5.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.67-.15.28.1 1.75.83 2.05.98.3.15.5.22.58.35.07.13.07.75-.18 1.46Z"/></svg>
-    WhatsApp Order
-  </a>
-</div>
 
 </body>
 </html>
